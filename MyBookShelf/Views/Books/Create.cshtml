@@ -1,0 +1,32 @@
+﻿@model MyBookShelf.Models.Book
+
+<h1>Add a New Book</h1>
+
+<form asp-action="Create" method="post">
+
+
+<div>
+    <label>Title</label><br>
+        <input asp-for="Title"/>
+</div>
+<div>
+    <label>Autor</label><br>
+        <input asp-for="Author"/>
+</div>
+
+
+
+    <div>
+        <label>Statut</label><br />
+        <select asp-for="Status">
+            <option value="0">À lire</option>
+            <option value="1">En cours</option>
+            <option value="2">Souhait</option>
+        </select>
+    </div>
+
+    <br />
+
+    <button type="submit">Ajouter</button>
+
+</form>

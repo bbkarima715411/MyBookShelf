@@ -1,47 +1,53 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MyBookShelf.BLL.Services;
+using MyBookShelf.Common1.Enum;
+using MyBookShelf.Common1.Models; 
 using MyBookShelf.Data;
-using MyBookShelf.Models;
-
-namespace MyBookShelf.Controllers
+namespace MyBookShelf.UI.Controllers
 {
     public class BooksController : Controller
     {
+        private readonly BookServices _service;
 
-        private readonly BookRepository _repository;
-
-        public BooksController(BookRepository repository)
+        public BooksController(BookServices service)
         {
-            _repository = repository;
+            _service = service;
         }
+
         public IActionResult Index()
         {
-            List<Book> books = _repository.GetAll();
-            return View (books);
+            var books = _service.GetAllBooks();
+            return View(books);
         }
 
         public IActionResult Create()
         {
             return View();
         }
+
         [HttpPost]
-        public IActionResult Create (Book book)
-        {  if (ModelState.IsValid)
+        public IActionResult Create(Book book) 
+        {
+            if (ModelState.IsValid)
             {
-                _repository.Add(book);
+                _service.AddBook(book);     
                 return RedirectToAction("Index");
             }
+
             return View(book);
         }
+
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            _repository.Delete(id);
+            _service.DeleteBook(id);
             return RedirectToAction("Index");
         }
+
         [HttpPost]
         public IActionResult UpdateStatus(int id, BookStatus status)
         {
-            _repository.UpdateStatus(id, status);
+            _service.UpdateStatus(id, status);
             return RedirectToAction("Index");
         }
     }

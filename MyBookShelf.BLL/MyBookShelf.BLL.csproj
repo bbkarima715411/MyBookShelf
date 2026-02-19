@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MyBookShelf.Common1\MyBookShelf.Common1.csproj" />
+    <ProjectReference Include="..\MyBookShelf.DAL\MyBookShelf.DAL.csproj" />
+  </ItemGroup>
+
 </Project>

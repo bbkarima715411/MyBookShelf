@@ -1,3 +1,4 @@
+using MyBookShelf.BLL.Services;
 using MyBookShelf.Data;
 
 namespace MyBookShelf
@@ -10,6 +11,7 @@ namespace MyBookShelf
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<BookServices>();
             builder.Services.AddScoped<BookRepository>();
 
             var app = builder.Build();

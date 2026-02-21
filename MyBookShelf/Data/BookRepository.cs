@@ -1,7 +1,11 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using MyBookShelf.Models;
-using System.Collections.Generic;
+using MyBookShelf.Common1.Enum;
+using MyBookShelf.Models; // Ajoutez la directive using pour le type BookStatus si nécessaire
+// using MyBookShelf.Models; // Assurez-vous que BookStatus est bien défini dans ce namespace
 
 namespace MyBookShelf.Data
 {
@@ -11,7 +15,9 @@ namespace MyBookShelf.Data
 
         public BookRepository(IConfiguration configuration)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            if (configuration == null) throw new ArgumentNullException(nameof(configuration));
+            _connectionString = configuration.GetConnectionString("DefaultConnection")
+                                ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
         }
 
         public List<Book> GetAll()

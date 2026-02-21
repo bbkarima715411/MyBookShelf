@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection;
 using MyBookShelf.BLL.Services;
 using MyBookShelf.Data;
 
@@ -12,7 +13,12 @@ namespace MyBookShelf
             // Add services to the container.
             builder.Services.AddControllersWithViews();
             builder.Services.AddScoped<BookServices>();
-            builder.Services.AddScoped<BookRepository>();
+            builder.Services.AddScoped<BookRepository>(provider =>
+            {
+                var configuration = provider.GetRequiredService<IConfiguration>();
+                var connectionString = configuration.GetConnectionString("DefaultConnection");
+                return new BookRepository(connectionString);
+            });
 
             var app = builder.Build();
 

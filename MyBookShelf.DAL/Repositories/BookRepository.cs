@@ -13,10 +13,10 @@ namespace MyBookShelf.DAL.Repositories
     public class BookRepository
     {
         private readonly string _connectionString;
-        
-        public BookRepository(IConfiguration configuration)
+
+        public BookRepository(string connectionString)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = connectionString;
         }
 
         public List<Book> GetAll()

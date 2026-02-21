@@ -25,7 +25,7 @@ namespace MyBookShelf.BLL.Services
 
         public void AddBook(Book book)
         {
-            _repository.Add(book);
+            _repository.add(book);
         }
 
         public void DeleteBook(int id)

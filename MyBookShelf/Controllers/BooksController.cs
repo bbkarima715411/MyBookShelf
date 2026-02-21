@@ -3,6 +3,7 @@ using MyBookShelf.BLL.Services;
 using MyBookShelf.Common1.Enum;
 using MyBookShelf.Common1.Models; 
 using MyBookShelf.Data;
+using MyBookShelf.Models;
 namespace MyBookShelf.UI.Controllers
 {
     public class BooksController : Controller

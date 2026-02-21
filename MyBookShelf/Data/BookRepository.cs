@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Data.SqlClient;
+using MyBookShelf.Common1.Models;
 using MyBookShelf.Models;
-using MyBookShelf.Common1.Enum;
-using MyBookShelf.Models; // Ajoutez la directive using pour le type BookStatus si nécessaire
-// using MyBookShelf.Models; // Assurez-vous que BookStatus est bien défini dans ce namespace
 
 namespace MyBookShelf.Data
 {
     public class BookRepository
     {
         private readonly string _connectionString;
+
+        public BookRepository(string connectionString)
+        {
+            if (string.IsNullOrWhiteSpace(connectionString))
+                throw new ArgumentException("La chaîne de connexion est nulle ou vide.", nameof(connectionString));
+
+            _connectionString = connectionString;
+        }
 
         public BookRepository(IConfiguration configuration)
         {
@@ -40,7 +43,7 @@ namespace MyBookShelf.Data
                             Id = reader.GetInt32(0),
                             Title = reader.GetString(1),
                             Author = reader.GetString(2),
-                            Status = (BookStatus)reader.GetInt32(3)
+                            //Status = (BookStatus)reader.GetInt32(3)
                         };
 
                         books.Add(book);

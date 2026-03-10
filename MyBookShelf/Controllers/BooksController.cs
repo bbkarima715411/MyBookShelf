@@ -2,8 +2,6 @@
 using MyBookShelf.BLL.Services;
 using MyBookShelf.Common1.Enum;
 using MyBookShelf.Common1.Models; 
-using MyBookShelf.Data;
-using MyBookShelf.Models;
 namespace MyBookShelf.UI.Controllers
 {
     public class BooksController : Controller
@@ -15,9 +13,10 @@ namespace MyBookShelf.UI.Controllers
             _service = service;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(BookStatus? status)
         {
-            var books = _service.GetAllBooks();
+            var books = status.HasValue ? _service.GetBooksByStatus(status.Value) : _service.GetAllBooks();
+            ViewBag.SelectedStatus = status;
             return View(books);
         }
 
@@ -50,6 +49,26 @@ namespace MyBookShelf.UI.Controllers
         {
             _service.UpdateStatus(id, status);
             return RedirectToAction("Index");
+        }
+
+        public IActionResult Edit(int id)
+        {
+            var book = _service.GetBookById(id);
+            if (book == null)
+                return NotFound();
+            return View(book);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Book book)
+        {
+            if (ModelState.IsValid)
+            {
+                _service.UpdateBook(book);
+                return RedirectToAction("Index");
+            }
+
+            return View(book);
         }
     }
 }

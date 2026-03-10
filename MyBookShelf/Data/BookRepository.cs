@@ -31,7 +31,7 @@ namespace MyBookShelf.Data
             {
                 connection.Open();
 
-                string query = "SELECT Id, Title, Author, Status FROM Books";
+                string query = "SELECT Id, Title, Author, Status, Rating, Comment FROM Books";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 using (SqlDataReader reader = command.ExecuteReader())
@@ -43,7 +43,9 @@ namespace MyBookShelf.Data
                             Id = reader.GetInt32(0),
                             Title = reader.GetString(1),
                             Author = reader.GetString(2),
-                            //Status = (BookStatus)reader.GetInt32(3)
+                            Status = (BookStatus)reader.GetInt32(3),
+                            Rating = reader.IsDBNull(4) ? null : reader.GetInt32(4),
+                            Comment = reader.IsDBNull(5) ? null : reader.GetString(5)
                         };
 
                         books.Add(book);
@@ -60,14 +62,16 @@ namespace MyBookShelf.Data
             {
                 connection.Open();
 
-                string query = @"INSERT INTO Books (Title, Author, Status)
-                                 VALUES (@Title, @Author, @Status)";
+                string query = @"INSERT INTO Books (Title, Author, Status, Rating, Comment)
+                                 VALUES (@Title, @Author, @Status, @Rating, @Comment)";
 
                 using (SqlCommand command = new SqlCommand(query, connection))
                 {
                     command.Parameters.AddWithValue("@Title", book.Title);
                     command.Parameters.AddWithValue("@Author", book.Author);
                     command.Parameters.AddWithValue("@Status", (int)book.Status);
+                    command.Parameters.AddWithValue("@Rating", (object?)book.Rating ?? DBNull.Value);
+                    command.Parameters.AddWithValue("@Comment", (object?)book.Comment ?? DBNull.Value);
 
                     command.ExecuteNonQuery();
                 }

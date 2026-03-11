@@ -1,9 +1,9 @@
-﻿namespace MyBookShelf.Common1.Enum
+﻿namespace MyBookShelf.Models
 {
     public enum BookStatus
     {
         ToRead = 0,
         Reading = 1,
-        Read = 2
+        WishList = 2
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MyBookShelf.Common1.Enum;
+using MyBookShelf.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace MyBookShelf.Common1.Models

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using MyBookShelf.Common1.Models;
 using MyBookShelf.Models;
 
 namespace MyBookShelf.Data

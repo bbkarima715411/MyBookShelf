@@ -1,21 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using MyBookShelf.BLL.Services;
-using MyBookShelf.Common1.Enum;
-using MyBookShelf.Common1.Models; 
+using MyBookShelf.Models;
 namespace MyBookShelf.UI.Controllers
 {
+    [Authorize]
     public class BooksController : Controller
     {
         private readonly BookServices _service;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public BooksController(BookServices service)
+        public BooksController(BookServices service, UserManager<IdentityUser> userManager)
         {
             _service = service;
+            _userManager = userManager;
         }
 
         public IActionResult Index(BookStatus? status)
         {
-            var books = status.HasValue ? _service.GetBooksByStatus(status.Value) : _service.GetAllBooks();
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrWhiteSpace(userId))
+                return Challenge();
+
+            var books = status.HasValue ? _service.GetBooksByStatus(userId, status.Value) : _service.GetAllBooks(userId);
             ViewBag.SelectedStatus = status;
             return View(books);
         }
@@ -28,6 +36,12 @@ namespace MyBookShelf.UI.Controllers
         [HttpPost]
         public IActionResult Create(Book book) 
         {
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrWhiteSpace(userId))
+                return Challenge();
+
+            book.UserId = userId;
+
             if (ModelState.IsValid)
             {
                 _service.AddBook(book);     
@@ -40,20 +54,32 @@ namespace MyBookShelf.UI.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            _service.DeleteBook(id);
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrWhiteSpace(userId))
+                return Challenge();
+
+            _service.DeleteBook(userId, id);
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         public IActionResult UpdateStatus(int id, BookStatus status)
         {
-            _service.UpdateStatus(id, status);
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrWhiteSpace(userId))
+                return Challenge();
+
+            _service.UpdateStatus(userId, id, status);
             return RedirectToAction("Index");
         }
 
         public IActionResult Edit(int id)
         {
-            var book = _service.GetBookById(id);
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrWhiteSpace(userId))
+                return Challenge();
+
+            var book = _service.GetBookById(userId, id);
             if (book == null)
                 return NotFound();
             return View(book);
@@ -62,9 +88,15 @@ namespace MyBookShelf.UI.Controllers
         [HttpPost]
         public IActionResult Edit(Book book)
         {
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrWhiteSpace(userId))
+                return Challenge();
+
+            book.UserId = userId;
+
             if (ModelState.IsValid)
             {
-                _service.UpdateBook(book);
+                _service.UpdateBook(userId, book);
                 return RedirectToAction("Index");
             }
 

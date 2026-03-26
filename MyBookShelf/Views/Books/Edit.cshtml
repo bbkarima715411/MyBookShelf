@@ -1,4 +1,4 @@
-@model MyBookShelf.Common1.Models.Book
+@model MyBookShelf.Models.Book
 
 @{
     ViewData["Title"] = "Éditer";
@@ -15,6 +15,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="UserId" value="" />
 
             <div class="col-12 col-md-6">
                 <label class="form-label" asp-for="Title"></label>

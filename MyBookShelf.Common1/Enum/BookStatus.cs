@@ -4,6 +4,6 @@
     {
         ToRead = 0,
         Reading = 1,
-        WishList = 2
+        Read = 2
     }
 }

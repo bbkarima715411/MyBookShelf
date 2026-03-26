@@ -1,11 +1,10 @@
-﻿using MyBookShelf.Common1.Enum;
-using MyBookShelf.Common1.Models;
-using MyBookShelf.DAL.Repositories;
+﻿using MyBookShelf.DAL.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MyBookShelf.Models;
 
 namespace MyBookShelf.BLL.Services
 {
@@ -18,19 +17,19 @@ namespace MyBookShelf.BLL.Services
             _repository = repository;
         }
 
-        public List<Book> GetAllBooks()
+        public List<Book> GetAllBooks(string userId)
         {
-            return _repository.GetAll();
+            return _repository.GetAll(userId);
         }
 
-        public List<Book> GetBooksByStatus(BookStatus status)
+        public List<Book> GetBooksByStatus(string userId, BookStatus status)
         {
-            return _repository.GetByStatus(status);
+            return _repository.GetByStatus(userId, status);
         }
 
-        public Book? GetBookById(int id)
+        public Book? GetBookById(string userId, int id)
         {
-            return _repository.GetById(id);
+            return _repository.GetById(userId, id);
         }
 
         public void AddBook(Book book)
@@ -40,22 +39,22 @@ namespace MyBookShelf.BLL.Services
             _repository.add(book);
         }
 
-        public void UpdateBook(Book book)
+        public void UpdateBook(string userId, Book book)
         {
             if (book.Rating.HasValue && (book.Rating.Value < 1 || book.Rating.Value > 5))
                 throw new ArgumentOutOfRangeException(nameof(book.Rating), "Rating must be between 1 and 5.");
-            _repository.Update(book);
+            _repository.Update(userId, book);
         }
 
-        public void DeleteBook(int id)
+        public void DeleteBook(string userId, int id)
         {
-            _repository.Delete(id);
+            _repository.Delete(userId, id);
         }
 
 
-        public void UpdateStatus(int id, BookStatus status)
+        public void UpdateStatus(string userId, int id, BookStatus status)
         {
-            _repository.UpdateStatus(id, status);
+            _repository.UpdateStatus(userId, id, status);
             
         }
     }

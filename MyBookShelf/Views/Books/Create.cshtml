@@ -1,4 +1,4 @@
-﻿@model MyBookShelf.Common1.Models.Book
+﻿@model MyBookShelf.Models.Book
 
 @{
     ViewData["Title"] = "Ajouter";
@@ -13,6 +13,8 @@
     <div class="card-body">
         <form asp-action="Create" method="post" class="row g-3">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <input type="hidden" asp-for="UserId" value="" />
 
             <div class="col-12 col-md-6">
                 <label class="form-label" asp-for="Title"></label>

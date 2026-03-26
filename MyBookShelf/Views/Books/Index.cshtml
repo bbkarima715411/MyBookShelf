@@ -1,4 +1,4 @@
-﻿@model List<MyBookShelf.Common1.Models.Book>
+﻿@model List<MyBookShelf.Models.Book>
 
 @{
     ViewData["Title"] = "Books";
@@ -51,11 +51,11 @@
                         <td class="fw-semibold">@book.Title</td>
                         <td>@book.Author</td>
                         <td>
-                            @if (book.Status == MyBookShelf.Common1.Enum.BookStatus.ToRead)
+                            @if (book.Status == MyBookShelf.Models.BookStatus.ToRead)
                             {
                                 <span class="badge text-bg-secondary">À lire</span>
                             }
-                            else if (book.Status == MyBookShelf.Common1.Enum.BookStatus.Reading)
+                            else if (book.Status == MyBookShelf.Models.BookStatus.Reading)
                             {
                                 <span class="badge text-bg-warning">En cours</span>
                             }
@@ -73,9 +73,9 @@
                                 <form asp-action="UpdateStatus" method="post" class="d-inline-flex gap-2">
                                     <input type="hidden" name="id" value="@book.Id" />
                                     <select class="form-select form-select-sm" name="status">
-                                        <option value="0" selected="@(book.Status == MyBookShelf.Common1.Enum.BookStatus.ToRead)">À lire</option>
-                                        <option value="1" selected="@(book.Status == MyBookShelf.Common1.Enum.BookStatus.Reading)">En cours</option>
-                                        <option value="2" selected="@(book.Status == MyBookShelf.Common1.Enum.BookStatus.Read)">Lu</option>
+                                        <option value="0" selected="@(book.Status == MyBookShelf.Models.BookStatus.ToRead)">À lire</option>
+                                        <option value="1" selected="@(book.Status == MyBookShelf.Models.BookStatus.Reading)">En cours</option>
+                                        <option value="2" selected="@(book.Status == MyBookShelf.Models.BookStatus.Read)">Lu</option>
                                     </select>
                                     <button type="submit" class="btn btn-sm btn-outline-secondary">OK</button>
                                 </form>

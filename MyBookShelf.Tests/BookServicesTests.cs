@@ -1,7 +1,6 @@
 using MyBookShelf.BLL.Services;
-using MyBookShelf.Common1.Enum;
-using MyBookShelf.Common1.Models;
 using MyBookShelf.DAL.Repositories;
+using MyBookShelf.Models;
 
 namespace MyBookShelf.Tests;
 
@@ -12,11 +11,11 @@ public class BookServicesTests
         private readonly List<Book> _books = new();
         private int _nextId = 1;
 
-        public List<Book> GetAll() => _books.ToList();
+        public List<Book> GetAll(string userId) => _books.Where(b => b.UserId == userId).ToList();
 
-        public List<Book> GetByStatus(BookStatus status) => _books.Where(b => b.Status == status).ToList();
+        public List<Book> GetByStatus(string userId, BookStatus status) => _books.Where(b => b.UserId == userId && b.Status == status).ToList();
 
-        public Book? GetById(int id) => _books.SingleOrDefault(b => b.Id == id);
+        public Book? GetById(string userId, int id) => _books.SingleOrDefault(b => b.UserId == userId && b.Id == id);
 
         public void add(Book book)
         {
@@ -24,9 +23,9 @@ public class BookServicesTests
             _books.Add(Clone(book));
         }
 
-        public void Update(Book book)
+        public void Update(string userId, Book book)
         {
-            var existing = _books.SingleOrDefault(b => b.Id == book.Id);
+            var existing = _books.SingleOrDefault(b => b.UserId == userId && b.Id == book.Id);
             if (existing == null) return;
 
             existing.Title = book.Title;
@@ -36,14 +35,14 @@ public class BookServicesTests
             existing.Comment = book.Comment;
         }
 
-        public void Delete(int id)
+        public void Delete(string userId, int id)
         {
-            _books.RemoveAll(b => b.Id == id);
+            _books.RemoveAll(b => b.UserId == userId && b.Id == id);
         }
 
-        public void UpdateStatus(int id, BookStatus status)
+        public void UpdateStatus(string userId, int id, BookStatus status)
         {
-            var existing = _books.SingleOrDefault(b => b.Id == id);
+            var existing = _books.SingleOrDefault(b => b.UserId == userId && b.Id == id);
             if (existing == null) return;
             existing.Status = status;
         }
@@ -51,6 +50,7 @@ public class BookServicesTests
         private static Book Clone(Book book) => new()
         {
             Id = book.Id,
+            UserId = book.UserId,
             Title = book.Title,
             Author = book.Author,
             Status = book.Status,
@@ -64,9 +64,11 @@ public class BookServicesTests
     {
         var repo = new FakeBookRepository();
         var service = new BookServices(repo);
+        const string userId = "user-1";
 
         var book = new Book
         {
+            UserId = userId,
             Title = "Test",
             Author = "Author",
             Status = BookStatus.Read,
@@ -81,9 +83,11 @@ public class BookServicesTests
     {
         var repo = new FakeBookRepository();
         var service = new BookServices(repo);
+        const string userId = "user-1";
 
         var book = new Book
         {
+            UserId = userId,
             Title = "Test",
             Author = "Author",
             Status = BookStatus.Read,
@@ -93,10 +97,10 @@ public class BookServicesTests
 
         service.AddBook(book);
 
-        var saved = repo.GetAll().Single();
+        var saved = repo.GetAll(userId).Single();
         saved.Rating = 4;
 
-        var exception = Record.Exception(() => service.UpdateBook(saved));
+        var exception = Record.Exception(() => service.UpdateBook(userId, saved));
         Assert.Null(exception);
     }
 }

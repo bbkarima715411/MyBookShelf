@@ -27,22 +27,46 @@ namespace MyBookShelf.BLL.Services
             return _repository.GetByStatus(userId, status);
         }
 
+        public List<Book> SearchBooks(string userId, string? title, string? author, BookStatus? status, bool favoritesOnly)
+        {
+            return _repository.Search(userId, title, author, status, favoritesOnly);
+        }
+
         public Book? GetBookById(string userId, int id)
         {
             return _repository.GetById(userId, id);
         }
 
+        /// <summary>
+        /// Valide les regles metier d'un livre. Leve une exception si le livre est invalide.
+        /// </summary>
+        public static void ValidateBook(Book book)
+        {
+            if (book == null)
+                throw new ArgumentNullException(nameof(book));
+
+            if (string.IsNullOrWhiteSpace(book.Title))
+                throw new ArgumentException("Le titre du livre est obligatoire.", nameof(book));
+
+            if (string.IsNullOrWhiteSpace(book.Author))
+                throw new ArgumentException("L'auteur du livre est obligatoire.", nameof(book));
+
+            if (!System.Enum.IsDefined(typeof(BookStatus), book.Status))
+                throw new ArgumentOutOfRangeException(nameof(book), "Le statut de lecture est invalide.");
+
+            if (book.Rating.HasValue && (book.Rating.Value < 1 || book.Rating.Value > 5))
+                throw new ArgumentOutOfRangeException(nameof(book), "La note doit etre comprise entre 1 et 5.");
+        }
+
         public void AddBook(Book book)
         {
-            if (book.Rating.HasValue && (book.Rating.Value < 1 || book.Rating.Value > 5))
-                throw new ArgumentOutOfRangeException(nameof(book.Rating), "Rating must be between 1 and 5.");
+            ValidateBook(book);
             _repository.add(book);
         }
 
         public void UpdateBook(string userId, Book book)
         {
-            if (book.Rating.HasValue && (book.Rating.Value < 1 || book.Rating.Value > 5))
-                throw new ArgumentOutOfRangeException(nameof(book.Rating), "Rating must be between 1 and 5.");
+            ValidateBook(book);
             _repository.Update(userId, book);
         }
 
@@ -54,8 +78,15 @@ namespace MyBookShelf.BLL.Services
 
         public void UpdateStatus(string userId, int id, BookStatus status)
         {
+            if (!System.Enum.IsDefined(typeof(BookStatus), status))
+                throw new ArgumentOutOfRangeException(nameof(status), "Le statut de lecture est invalide.");
+
             _repository.UpdateStatus(userId, id, status);
-            
+        }
+
+        public void SetFavorite(string userId, int id, bool isFavorite)
+        {
+            _repository.UpdateFavorite(userId, id, isFavorite);
         }
     }
 }

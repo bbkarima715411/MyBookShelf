@@ -1,11 +1,11 @@
-@model MyBookShelf.Models.Book
+@model MyBookShelf.UI.ViewModels.BookEditViewModel
 
 @{
-    ViewData["Title"] = "Éditer";
+    ViewData["Title"] = "Modifier";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1 class="h3 mb-0">Éditer le livre</h1>
+    <h1 class="h3 mb-0">Modifier le livre</h1>
     <a class="btn btn-outline-secondary" asp-action="Index">Retour</a>
 </div>
 
@@ -34,17 +34,25 @@
                     <option value="0">À lire</option>
                     <option value="1">En cours</option>
                     <option value="2">Lu</option>
+                    <option value="3">Abandonné</option>
                 </select>
             </div>
 
             <div class="col-12 col-md-4">
-                <label class="form-label" asp-for="Rating">Appréciation (1-5)</label>
+                <label class="form-label" asp-for="Rating"></label>
                 <input class="form-control" asp-for="Rating" type="number" min="1" max="5" />
                 <span class="text-danger" asp-validation-for="Rating"></span>
             </div>
 
+            <div class="col-12 col-md-4 d-flex align-items-end">
+                <div class="form-check mb-2">
+                    <input class="form-check-input" asp-for="IsFavorite" />
+                    <label class="form-check-label" asp-for="IsFavorite">Livre favori</label>
+                </div>
+            </div>
+
             <div class="col-12">
-                <label class="form-label" asp-for="Comment">Commentaire</label>
+                <label class="form-label" asp-for="Comment"></label>
                 <textarea class="form-control" asp-for="Comment" rows="3"></textarea>
                 <span class="text-danger" asp-validation-for="Comment"></span>
             </div>

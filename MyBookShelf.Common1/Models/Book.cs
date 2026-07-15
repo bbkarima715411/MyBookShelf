@@ -18,6 +18,8 @@ namespace MyBookShelf.Models
 
         public BookStatus Status { get; set; }
 
+        public bool IsFavorite { get; set; }
+
         [Range(1, 5)]
         public int? Rating { get; set; }
 

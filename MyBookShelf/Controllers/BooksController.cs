@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MyBookShelf.BLL.Services;
 using MyBookShelf.Models;
+using MyBookShelf.UI.ViewModels;
 namespace MyBookShelf.UI.Controllers
 {
     [Authorize]
@@ -17,41 +18,55 @@ namespace MyBookShelf.UI.Controllers
             _userManager = userManager;
         }
 
-        public IActionResult Index(BookStatus? status)
+        public IActionResult Index(BookFilterViewModel filter)
         {
             var userId = _userManager.GetUserId(User);
             if (string.IsNullOrWhiteSpace(userId))
                 return Challenge();
 
-            var books = status.HasValue ? _service.GetBooksByStatus(userId, status.Value) : _service.GetAllBooks(userId);
-            ViewBag.SelectedStatus = status;
-            return View(books);
+            filter ??= new BookFilterViewModel();
+
+            var books = _service.SearchBooks(userId, filter.Title, filter.Author, filter.Status, filter.FavoritesOnly);
+
+            var model = new BookListViewModel
+            {
+                Books = books,
+                Filter = filter
+            };
+
+            return View(model);
         }
 
         public IActionResult Create()
         {
-            return View();
+            return View(new BookCreateViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Book book) 
+        public IActionResult Create(BookCreateViewModel model)
         {
             var userId = _userManager.GetUserId(User);
             if (string.IsNullOrWhiteSpace(userId))
                 return Challenge();
 
-            book.UserId = userId;
-            ModelState.Remove(nameof(Book.UserId));
+            if (!ModelState.IsValid)
+                return View(model);
 
-            if (ModelState.IsValid)
+            var book = new Book
             {
-                _service.AddBook(book);
-                TempData["SuccessMessage"] = "Le livre a bien été ajouté à votre bibliothèque.";
-                return RedirectToAction("Index");
-            }
+                UserId = userId,
+                Title = model.Title.Trim(),
+                Author = model.Author.Trim(),
+                Status = model.Status,
+                IsFavorite = model.IsFavorite,
+                Rating = model.Rating,
+                Comment = string.IsNullOrWhiteSpace(model.Comment) ? null : model.Comment.Trim()
+            };
 
-            return View(book);
+            _service.AddBook(book);
+            TempData["SuccessMessage"] = "Le livre a bien été ajouté à votre bibliothèque.";
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -89,28 +104,70 @@ namespace MyBookShelf.UI.Controllers
             var book = _service.GetBookById(userId, id);
             if (book == null)
                 return NotFound();
-            return View(book);
+
+            var model = new BookEditViewModel
+            {
+                Id = book.Id,
+                Title = book.Title,
+                Author = book.Author,
+                Status = book.Status,
+                IsFavorite = book.IsFavorite,
+                Rating = book.Rating,
+                Comment = book.Comment
+            };
+
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Book book)
+        public IActionResult Edit(BookEditViewModel model)
         {
             var userId = _userManager.GetUserId(User);
             if (string.IsNullOrWhiteSpace(userId))
                 return Challenge();
 
-            book.UserId = userId;
-            ModelState.Remove(nameof(Book.UserId));
+            if (!ModelState.IsValid)
+                return View(model);
 
-            if (ModelState.IsValid)
+            var existing = _service.GetBookById(userId, model.Id);
+            if (existing == null)
+                return NotFound();
+
+            var book = new Book
             {
-                _service.UpdateBook(userId, book);
-                TempData["SuccessMessage"] = "Les modifications ont été enregistrées.";
-                return RedirectToAction("Index");
-            }
+                Id = model.Id,
+                UserId = userId,
+                Title = model.Title.Trim(),
+                Author = model.Author.Trim(),
+                Status = model.Status,
+                IsFavorite = model.IsFavorite,
+                Rating = model.Rating,
+                Comment = string.IsNullOrWhiteSpace(model.Comment) ? null : model.Comment.Trim()
+            };
 
-            return View(book);
+            _service.UpdateBook(userId, book);
+            TempData["SuccessMessage"] = "Les modifications ont été enregistrées.";
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ToggleFavorite(int id)
+        {
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrWhiteSpace(userId))
+                return Challenge();
+
+            var book = _service.GetBookById(userId, id);
+            if (book == null)
+                return NotFound();
+
+            _service.SetFavorite(userId, id, !book.IsFavorite);
+            TempData["SuccessMessage"] = book.IsFavorite
+                ? "Le livre a été retiré de vos favoris."
+                : "Le livre a été ajouté à vos favoris.";
+            return RedirectToAction("Index");
         }
     }
 }

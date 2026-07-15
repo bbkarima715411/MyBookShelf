@@ -34,6 +34,7 @@ namespace MyBookShelf.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(Book book) 
         {
             var userId = _userManager.GetUserId(User);
@@ -41,10 +42,12 @@ namespace MyBookShelf.UI.Controllers
                 return Challenge();
 
             book.UserId = userId;
+            ModelState.Remove(nameof(Book.UserId));
 
             if (ModelState.IsValid)
             {
-                _service.AddBook(book);     
+                _service.AddBook(book);
+                TempData["SuccessMessage"] = "Le livre a bien été ajouté à votre bibliothèque.";
                 return RedirectToAction("Index");
             }
 
@@ -52,6 +55,7 @@ namespace MyBookShelf.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
             var userId = _userManager.GetUserId(User);
@@ -59,10 +63,12 @@ namespace MyBookShelf.UI.Controllers
                 return Challenge();
 
             _service.DeleteBook(userId, id);
+            TempData["SuccessMessage"] = "Le livre a été supprimé de votre bibliothèque.";
             return RedirectToAction("Index");
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult UpdateStatus(int id, BookStatus status)
         {
             var userId = _userManager.GetUserId(User);
@@ -70,6 +76,7 @@ namespace MyBookShelf.UI.Controllers
                 return Challenge();
 
             _service.UpdateStatus(userId, id, status);
+            TempData["SuccessMessage"] = "Le statut de lecture a été mis à jour.";
             return RedirectToAction("Index");
         }
 
@@ -86,6 +93,7 @@ namespace MyBookShelf.UI.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Edit(Book book)
         {
             var userId = _userManager.GetUserId(User);
@@ -93,10 +101,12 @@ namespace MyBookShelf.UI.Controllers
                 return Challenge();
 
             book.UserId = userId;
+            ModelState.Remove(nameof(Book.UserId));
 
             if (ModelState.IsValid)
             {
                 _service.UpdateBook(userId, book);
+                TempData["SuccessMessage"] = "Les modifications ont été enregistrées.";
                 return RedirectToAction("Index");
             }
 

@@ -1,8 +1,55 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Accueil";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/home.css" asp-append-version="true" />
+}
+
+<section class="msb-hero">
+    <h1>Votre bibliothèque personnelle, simple et chaleureuse</h1>
+    <p class="lead">
+        MyBookShelf vous aide à organiser vos lectures : gardez la liste des livres à lire,
+        suivez ceux que vous lisez, retrouvez vos favoris et conservez vos impressions.
+    </p>
+    <div class="d-flex flex-wrap justify-content-center gap-2">
+        @if (User?.Identity?.IsAuthenticated == true)
+        {
+            <a class="btn btn-primary btn-lg" asp-controller="Books" asp-action="Index">Accéder à ma bibliothèque</a>
+        }
+        else
+        {
+            <a class="btn btn-primary btn-lg" asp-area="Identity" asp-page="/Account/Register">Créer mon compte</a>
+            <a class="btn btn-outline-primary btn-lg" asp-area="Identity" asp-page="/Account/Login">Se connecter</a>
+        }
+    </div>
+</section>
+
+<section aria-label="Ce que permet MyBookShelf">
+    <div class="row g-3">
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card msb-feature">
+                <h2>Organiser vos lectures</h2>
+                <p>Rassemblez tous vos livres au même endroit et gardez une vue claire sur votre bibliothèque.</p>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card msb-feature">
+                <h2>Suivre vos lectures en cours</h2>
+                <p>Classez chaque livre : à lire, en cours, lu ou abandonné, et retrouvez-vous facilement.</p>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card msb-feature">
+                <h2>Conserver vos favoris</h2>
+                <p>Marquez les livres qui comptent pour vous et retrouvez-les en un clic.</p>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 col-lg-3">
+            <div class="card msb-feature">
+                <h2>Noter et annoter</h2>
+                <p>Attribuez une note à vos lectures et gardez une note personnelle, visible par vous seul.</p>
+            </div>
+        </div>
+    </div>
+</section>

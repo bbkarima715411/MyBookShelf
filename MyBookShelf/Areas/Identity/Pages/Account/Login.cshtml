@@ -1,0 +1,47 @@
+@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Connexion";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/identity.css" asp-append-version="true" />
+}
+
+<div class="card msb-auth-card">
+    <div class="card-body">
+        <h1>Connexion</h1>
+
+        <form id="account" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <div class="mb-3">
+                <label asp-for="Input.Email" class="form-label"></label>
+                <input asp-for="Input.Email" class="form-control" autocomplete="email" aria-required="true" placeholder="nom@exemple.fr" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Input.Password" class="form-label"></label>
+                <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Votre mot de passe" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 form-check">
+                <input class="form-check-input" asp-for="Input.RememberMe" />
+                <label asp-for="Input.RememberMe" class="form-check-label"></label>
+            </div>
+
+            <button id="login-submit" type="submit" class="btn btn-primary w-100">Se connecter</button>
+        </form>
+
+        <p class="msb-auth-switch">
+            Vous n'avez pas encore de compte ?
+            <a asp-page="./Register">Créer un compte</a>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

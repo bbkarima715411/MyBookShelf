@@ -1,0 +1,49 @@
+@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Créer un compte";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/identity.css" asp-append-version="true" />
+}
+
+<div class="card msb-auth-card">
+    <div class="card-body">
+        <h1>Créer un compte</h1>
+
+        <form id="registerForm" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+            <div class="mb-3">
+                <label asp-for="Input.Email" class="form-label"></label>
+                <input asp-for="Input.Email" class="form-control" autocomplete="email" aria-required="true" placeholder="nom@exemple.fr" />
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Input.Password" class="form-label"></label>
+                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Choisissez un mot de passe" />
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+                <div class="form-text">Au moins 6 caractères, avec une majuscule, une minuscule, un chiffre et un caractère spécial.</div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Input.ConfirmPassword" class="form-label"></label>
+                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Confirmez votre mot de passe" />
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            <button id="register-submit" type="submit" class="btn btn-primary w-100">Créer mon compte</button>
+        </form>
+
+        <p class="msb-auth-switch">
+            Vous avez déjà un compte ?
+            <a asp-page="./Login">Se connecter</a>
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

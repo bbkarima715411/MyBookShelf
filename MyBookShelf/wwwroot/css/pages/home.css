@@ -1,0 +1,37 @@
+/* ============================================================
+   MyBookShelf - Page d'accueil
+   ============================================================ */
+
+.msb-hero {
+    padding: 3.5rem 1rem 2.5rem;
+    text-align: center;
+}
+
+.msb-hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    max-width: 40rem;
+    margin: 0 auto 1rem;
+}
+
+.msb-hero .lead {
+    color: var(--msb-ink-soft);
+    max-width: 38rem;
+    margin: 0 auto 1.75rem;
+}
+
+.msb-feature {
+    height: 100%;
+    text-align: center;
+    padding: 1.5rem 1.25rem;
+}
+
+.msb-feature h2 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.msb-feature p {
+    color: var(--msb-ink-soft);
+    font-size: 0.95rem;
+    margin-bottom: 0;
+}

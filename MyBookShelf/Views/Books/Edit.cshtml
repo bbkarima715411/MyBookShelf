@@ -40,7 +40,8 @@
 
             <div class="col-12 col-md-4">
                 <label class="form-label" asp-for="Rating"></label>
-                <input class="form-control" asp-for="Rating" type="number" min="1" max="5" />
+                <input class="form-control" asp-for="Rating" type="number" min="1" max="5" aria-describedby="rating-help" />
+                <div id="rating-help" class="form-text">Laissez vide si vous ne souhaitez pas noter ce livre.</div>
                 <span class="text-danger" asp-validation-for="Rating"></span>
             </div>
 
@@ -53,7 +54,8 @@
 
             <div class="col-12">
                 <label class="form-label" asp-for="Comment"></label>
-                <textarea class="form-control" asp-for="Comment" rows="3"></textarea>
+                <textarea class="form-control" asp-for="Comment" rows="3" aria-describedby="comment-help"></textarea>
+                <div id="comment-help" class="form-text">Visible uniquement par vous.</div>
                 <span class="text-danger" asp-validation-for="Comment"></span>
             </div>
 

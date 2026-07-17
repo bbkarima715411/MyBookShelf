@@ -1,0 +1,121 @@
+/* ============================================================
+   MyBookShelf - Composants reutilisables
+   Navigation, boutons, cartes, badges, pied de page, etats vides
+   ============================================================ */
+
+/* ----- Barre de navigation ----- */
+.msb-navbar {
+    background-color: var(--msb-surface);
+    border-bottom: 1px solid var(--msb-border);
+}
+
+.msb-brand {
+    font-family: Georgia, "Iowan Old Style", "Times New Roman", serif;
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--msb-ink) !important;
+}
+
+.msb-navbar .nav-link {
+    color: var(--msb-ink);
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
+}
+
+.msb-navbar .nav-link:hover,
+.msb-navbar .nav-link:focus {
+    color: var(--msb-primary-hover);
+    text-decoration: underline;
+}
+
+/* ----- Boutons ----- */
+.btn {
+    min-height: 40px;
+}
+
+.btn-sm {
+    min-height: 34px;
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--msb-primary);
+    --bs-btn-border-color: var(--msb-primary);
+    --bs-btn-hover-bg: var(--msb-primary-hover);
+    --bs-btn-hover-border-color: var(--msb-primary-hover);
+    --bs-btn-active-bg: var(--msb-primary-hover);
+    --bs-btn-active-border-color: var(--msb-primary-hover);
+    --bs-btn-disabled-bg: var(--msb-primary);
+    --bs-btn-disabled-border-color: var(--msb-primary);
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--msb-primary);
+    --bs-btn-border-color: var(--msb-primary);
+    --bs-btn-hover-bg: var(--msb-primary);
+    --bs-btn-hover-border-color: var(--msb-primary);
+    --bs-btn-active-bg: var(--msb-primary-hover);
+    --bs-btn-active-border-color: var(--msb-primary-hover);
+}
+
+/* ----- Cartes ----- */
+.card {
+    background-color: var(--msb-surface);
+    border-color: var(--msb-border);
+}
+
+/* ----- Badges de statut de lecture ----- */
+.badge-status {
+    font-weight: 600;
+    font-size: 0.78rem;
+    padding: 0.4em 0.7em;
+}
+
+.badge-status-toread {
+    background-color: #e7dfcf;
+    color: #4d4232;
+}
+
+.badge-status-reading {
+    background-color: #9c6317;
+    color: #ffffff;
+}
+
+.badge-status-read {
+    background-color: var(--msb-accent);
+    color: #ffffff;
+}
+
+.badge-status-abandoned {
+    background-color: #6a5f4f;
+    color: #ffffff;
+}
+
+/* ----- Badge favori ----- */
+.badge-favorite {
+    background-color: var(--msb-gold-bg);
+    color: var(--msb-gold-text);
+    border: 1px solid var(--msb-gold-border);
+    font-weight: 600;
+    font-size: 0.78rem;
+    padding: 0.4em 0.7em;
+}
+
+/* ----- Etats vides ----- */
+.msb-empty {
+    padding: 3.5rem 1.5rem;
+    text-align: center;
+}
+
+.msb-empty h2 {
+    margin-bottom: 0.75rem;
+}
+
+/* ----- Pied de page ----- */
+.msb-footer {
+    background-color: var(--msb-surface);
+    border-top: 1px solid var(--msb-border);
+    color: var(--msb-ink-soft);
+    padding: 1.25rem 0;
+    margin-top: 2.5rem;
+    font-size: 0.9rem;
+}

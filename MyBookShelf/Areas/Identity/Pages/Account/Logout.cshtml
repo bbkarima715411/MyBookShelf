@@ -1,0 +1,17 @@
+@page
+@model LogoutModel
+@{
+    ViewData["Title"] = "Déconnexion";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/identity.css" asp-append-version="true" />
+}
+
+<div class="card msb-auth-card">
+    <div class="card-body text-center">
+        <h1>Déconnexion</h1>
+        <p class="mb-4">Vous avez été déconnecté de MyBookShelf.</p>
+        <a class="btn btn-primary" asp-area="" asp-controller="Home" asp-action="Index">Retour à l'accueil</a>
+    </div>
+</div>

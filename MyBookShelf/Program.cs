@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MyBookShelf.BLL.Services;
 using MyBookShelf.DAL.Repositories;
 using MyBookShelf.Data;
+using MyBookShelf.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +20,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
     {
         options.SignIn.RequireConfirmedAccount = false;
     })
+    .AddErrorDescriber<FrenchIdentityErrorDescriber>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddScoped<BookServices>();

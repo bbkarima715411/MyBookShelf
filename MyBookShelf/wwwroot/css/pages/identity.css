@@ -1,0 +1,25 @@
+/* ============================================================
+   MyBookShelf - Pages Connexion / Inscription
+   ============================================================ */
+
+.msb-auth-card {
+    max-width: 26rem;
+    margin: 2.5rem auto;
+}
+
+.msb-auth-card .card-body {
+    padding: 2rem;
+}
+
+.msb-auth-card h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.msb-auth-switch {
+    text-align: center;
+    margin-top: 1.25rem;
+    color: var(--msb-ink-soft);
+    font-size: 0.95rem;
+}

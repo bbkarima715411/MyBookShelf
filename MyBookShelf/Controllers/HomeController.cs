@@ -15,14 +15,6 @@ namespace MyBookShelf.Controllers
 
         public IActionResult Index()
         {
-            if (User?.Identity?.IsAuthenticated == true)
-                return RedirectToAction("Index", "Books");
-
-            return Redirect("/Identity/Account/Login");
-        }
-
-        public IActionResult Privacy()
-        {
             return View();
         }
 
